@@ -10,9 +10,11 @@ dotenv.config();
 
 const app = express();
 
+const clientOrigin = process.env.CLIENT_ORIGIN?.replace(/\/$/, "") || "";
+
 app.use(
   cors({
-    origin: process.env.CLIENT_ORIGIN,
+    origin: clientOrigin,
     credentials: true,
   })
 );
