@@ -1,10 +1,8 @@
-import express from "express";
-import serverless from "serverless-http";
 import cors from "cors";
+import express from "express";
 import dotenv from "dotenv";
-import cookieParser from "cookie-parser";
-
 import userRoutes from "./routes/user.routes.js";
+import cookieParser from "cookie-parser";
 import boardRoutes from "./routes/board.routes.js";
 import taskRoutes from "./routes/task.routes.js";
 
@@ -14,7 +12,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://kanban-modern.vercel.app",
+    origin: process.env.CLIENT_ORIGIN || ,
     credentials: true,
   })
 );
@@ -28,8 +26,13 @@ app.use("/boards", boardRoutes);
 app.use("/tasks", taskRoutes);
 
 app.get("/health", (req, res) => {
-  res.json({ status: "ok" });
+  return res.status(200).json({
+    status: "success",
+    message: "Server is healthy",
+  });
 });
 
-// IMPORTANT for Vercel
-export default serverless(app);
+
+app.listen(process.env.PORT || 5000, () => {
+  console.log(`Server is running on port ${process.env.PORT || 5000}`);
+});
